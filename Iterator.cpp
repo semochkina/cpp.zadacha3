@@ -2,7 +2,12 @@
 
 // итератор с использованием CircularBuffer
 class Iterator {
+
 	CircularBuffer *circularBuffer;
+	// количество заполненных элементов
+	int count;
+	// номер текущего элемента
+	int curr;
 
 public:
 	Iterator(CircularBuffer *circularBuffer) : circularBuffer(circularBuffer) {
@@ -11,29 +16,30 @@ public:
 
 	// начать работу
 	void start() {
-		// CircularBuffer всегда готов к работе
+		count = circularBuffer->countQueue();
+		curr = 0;
 	}
 
 	// получить очередной элемент
 	int getValue() {
-		return circularBuffer->getValue();
+		return circularBuffer->get(curr);
 	}
 
-	// сдвинуть итератор на следующий елемент
+	// сдвинуть итератор на следующий элемент
 	void next() {
 		if (!finish()) {
-			circularBuffer->pop();
+			curr++;
 		}
 	}
 
 	// проверка все ли проитерировано
 	bool finish() {
-		return circularBuffer->isEmpty();
+		return curr >= count;
 	};
 
 	friend ostream &operator<<(ostream &os, Iterator &iterator) {
 		os << "elements";
-		for (; !iterator.finish(); iterator.next())
+		for (iterator.start(); !iterator.finish(); iterator.next())
 			os << ", " << iterator.getValue();
 		return os;
 	}

@@ -29,6 +29,11 @@ public:
 		delete mas;
 	}
 
+	// получить элемент по номеру
+	int get(const int currNumber) {
+		return mas[elementCurr(currNumber)];
+	}
+
 	// добавить элемент в конец очереди (при переполнении - исключение)
 	void push(int value) {
 		if (count >= size) throw 101;
